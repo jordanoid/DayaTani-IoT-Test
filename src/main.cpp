@@ -1,10 +1,9 @@
-#include <Arduino.h>
 #include <ArduinoJson.h>
 
-const uint8_t battPin = A1;
-const float minVolt = 3.0;
-const float maxVolt = 4.2;
-int battPercentage;
+const int battPin = A1;
+float minVolt = 3.0;
+float maxVolt = 4.2;
+float battPercentage;
 float battVoltage;
 float adc;
 int prevTime = 0;
@@ -20,12 +19,13 @@ void setup(){
 
 void loop(){
   // put your main code here, to run repeatedly:
-  if (prevTime == 0 || millis() - prevTime > 1000){
+  if (prevTime == 0 || millis() - prevTime >= 1000){
     adc = analogRead(A1);
     battVoltage = adc * 5 / 1023;
-    battPercentage = map(battVoltage, minVolt, maxVolt, 0, 100);
+    Serial.println(battVoltage);
+    battPercentage = map(battVoltage * 1000, minVolt * 1000, maxVolt * 1000, 0, 100);
     battPercentage = constrain(battPercentage, 0, 100);
-
+    doc.clear(); 
     doc["percentage"] = battPercentage;
     serializeJson(doc, jsonString);
 
