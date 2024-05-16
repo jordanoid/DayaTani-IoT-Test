@@ -22,7 +22,6 @@ void loop(){
   if (prevTime == 0 || millis() - prevTime >= 1000){
     adc = analogRead(A1);
     battVoltage = adc * 5 / 1023;
-    Serial.println(battVoltage);
     battPercentage = map(battVoltage * 1000, minVolt * 1000, maxVolt * 1000, 0, 100);
     battPercentage = constrain(battPercentage, 0, 100);
     doc.clear(); 
